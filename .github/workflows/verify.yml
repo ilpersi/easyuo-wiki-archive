@@ -1,0 +1,26 @@
+name: verify
+
+on:
+  push:
+  pull_request:
+
+# Checks the committed artifacts. Neither verifier needs pandoc; regenerating
+# EasyUO-Documentation.md (which does) is a local step — see README.md.
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify the export — every [[link]] and {{template}} resolves
+        run: python3 scripts/verify_links.py Wiki-20260908T054528Z.xml
+
+      - name: Verify the Markdown — anchors, page coverage, no stray wiki markup
+        run: python3 scripts/verify_markdown.py
+
+      - name: Reject CRLF line endings
+        run: "! grep -rlP '\\r$' EasyUO-Documentation.md scripts/ || (echo 'CRLF found'; exit 1)"

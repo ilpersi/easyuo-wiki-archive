@@ -1,0 +1,9 @@
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.gif binary
+
+# generated artifacts — keep them out of GitHub's language stats and collapse
+# them in diffs by default (they are rebuilt by scripts/, not edited)
+EasyUO-Documentation.md linguist-generated=true
+Wiki-*.xml              linguist-generated=true
